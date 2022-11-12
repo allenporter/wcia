@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <title>Photo Carousel Demo</title>
+        <script>
+            class PhotoCarousel extends HTMLElement {
+
+                connectedCallback() {
+                    this._photoIndex = 0;
+                    this._photos = this.getAttribute('photos').split(',');
+
+                    this.innerHTML = '<h2>' + this.getAttribute("title") + '</h2>' +
+                      '<h4>by ' + this.getAttribute("author") + '</h4>' +
+                      '<div class="image-container"></div>' +
+                      '<button class="back">&lt;</button>' +
+                      '<button class="forward">&gt;</button>';
+                    this.showPhoto();
+                    this.querySelector("button.back").addEventListener("click", event => this.onBackButtonClick(event));
+                    this.querySelector("button.forward").addEventListener("click", event => this.onForwardButtonClick(event));
+                }
+
+                showPhoto() {
+                    console.log("this._photoIndex=" + this._photoIndex)
+                    this.querySelector(".image-container").style.backgroundImage = 'url(' + this._photos[this._photoIndex] + ')';
+                }
+
+                onBackButtonClick(event) {
+                    this._photoIndex--;
+                    if (this._photoIndex < 0) {
+                        this._photoIndex = this._photos.length - 1;
+                    }
+                    this.showPhoto();
+                }
+
+                onForwardButtonClick(event) {
+                    this._photoIndex++;
+                    if (this._photoIndex >= this._photos.length) {
+                        this._photoIndex = 0;
+                    }
+                    this.showPhoto();
+                }
+
+            }
+            if (!customElements.get('wcia-photo-carousel')) {
+                customElements.define('wcia-photo-carousel', PhotoCarousel)
+            }
+
+        </script>
+        <style>
+            wcia-photo-carousel {
+                position: relative;
+                width: 500px;
+                height: 300px;
+                display: flex;
+                padding-top: 10px;
+                flex-direction: column;
+                border-color: black;
+                border-width: 1px;
+                border-style: solid;
+            }
+            wcia-photo-carousel h2, h4 {
+                margin-bottom: 0;
+                margin-top: 0;
+                margin-left: 10px;
+            }
+            wcia-photo-carousel .image-container {
+                margin-top: 15px;
+                flex: 1;
+                background-color: black;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: 50%;
+            }
+            wcia-photo-carousel button {
+                cursor: pointer;
+                background: transparent;
+                border: none;
+                font-size: 48px;
+                color: white;
+                position: absolute;
+                top: 50%;
+            }
+            wcia-photo-carousel button.back {
+                left: 10px;
+            }
+            wcia-photo-carousel button.forward {
+                right: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <wcia-photo-carousel
+            title="Vacation Photos"
+            author="Allen Porter"
+            photos="https://preview.redd.it/5p67oy942ov91.jpg?width=640&crop=smart&auto=webp&s=c6b23cc9d76cf00ca20897e823e15e94c403a843,https://external-preview.redd.it/XU8wo_u2KrKGJ-NEgoC-Wdz5LEDwc38XLx3m64UZcf8.jpg?auto=webp&s=e6a9bf814225e2eb4e0e0f39d50a2840bb69033a"
+            ></wcia-photo-carousel>
+    </body>
+</html>
