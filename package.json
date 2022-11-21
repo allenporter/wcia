@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "csshake": "^1.7.0",
+    "lit-html": "^2.4.0",
     "midi.js": "^0.3.1"
   }
 }

@@ -1,9 +1,30 @@
+import { html } from "../../../node_modules/lit-html/lit-html.js";
+import { repeat } from "../../../node_modules/lit-html/directives/repeat.js";
+
 export default {
     render(props) {
-        return `${this.html(props)}
-                ${this.css(props)}`;
+        return html`
+        <div class="logo-picker">Logo:
+            <select>
+                ${repeat(
+                    props.logoChoices,
+                    (i) => i.id, (i, index) => html`
+                        <option value="${i.uri}">${i.name}</option>`)}
+            </select>
+        </div>
+        <div class="background-picker">Background:
+            <select>
+                ${repeat(
+                    props.backgroundChoices,
+                    (i) => i.id, (i, index) => html`
+                        <option value="${i.uri}">${i.name}</option>`)}
+            </select>
+        </div>
+            ${this.html(props)}
+            ${this.css(props)}
+        `;
     },
-    html(p) { return ` <div class="biz-card">
+    html(p) { return html`<div class="biz-card">
     <div class="logo"></div>
     <div class="top-text">
         <h1>${p.first_name} ${p.last_name}</h1>
@@ -14,7 +35,7 @@ export default {
         <h3>${p.email} / ${p.website}</h3>
     </div>
 </div>`; },
-    css(p) { return ` <style>
+    css(p) { return html`<style>
     .biz-card {
         font-size: 16px;
         font-family: sans-serif;
